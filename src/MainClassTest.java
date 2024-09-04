@@ -7,11 +7,11 @@ public class MainClassTest extends MainClass {
         int b = this.getLocalNumber();
         if (b==14)
         {
-            System.out.println("True");
+            System.out.println("Возвращается корректное число = " + b);
         }
         else
         {
-             System.out.println("False");
+             System.out.println("Возвращается некорректное число. Текущее число = " + b);
         }
     }
 }
