@@ -30,5 +30,14 @@ public class MainClassTest extends MainClass {
           }*/
       }
 
+    @Test
+    public void testGetClassString()
+    {
+ String a = "hello";
+ String c = "Hello";
+ Assert.assertTrue("Значение подстроки не найдено",this.getClassString().indexOf(a) > -1 || this.getClassString().indexOf(c) > -1);
+    }
+
+
     }
 
