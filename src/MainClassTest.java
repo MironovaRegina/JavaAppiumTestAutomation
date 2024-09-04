@@ -1,4 +1,7 @@
+import org.junit.Assert;
 import org.junit.Test;
+
+import javax.swing.*;
 
 public class MainClassTest extends MainClass {
     @Test
@@ -14,4 +17,17 @@ public class MainClassTest extends MainClass {
              System.out.println("Возвращается некорректное число. Текущее число = " + b);
         }
     }
-}
+
+    @Test
+    public void testGetClassNumber()
+    {
+      if (this.getClassNumber() > 45) {
+          System.out.println("Число больше 45");
+      }
+          else {
+        Assert.fail("Число меньше или равно 45");
+          }
+      }
+
+    }
+
