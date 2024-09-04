@@ -21,12 +21,13 @@ public class MainClassTest extends MainClass {
     @Test
     public void testGetClassNumber()
     {
-      if (this.getClassNumber() > 45) {
+        Assert.assertTrue("Число меньше или равно 45",this.getClassNumber() > 45);
+    /*  if (this.getClassNumber() > 45) {
           System.out.println("Число больше 45");
       }
           else {
         Assert.fail("Число меньше или равно 45");
-          }
+          }*/
       }
 
     }
