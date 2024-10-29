@@ -1,10 +1,16 @@
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.time.Duration;
 
 public class FirstTest {
     private AndroidDriver driver;
@@ -18,6 +24,7 @@ public class FirstTest {
         options.setCapability("automationName","UiAutomator2");
         options.setCapability("appPackage","org.wikipedia");
         options.setCapability("appActivity",".main.MainActivity");
+        options.setApp(System.getProperty("user.dir") + "/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(
                 // The default URL in Appium 1 is http://127.0.0.1:4723/wd/hub
@@ -31,6 +38,30 @@ public class FirstTest {
     }
     @Test
     public void firstTest(){
-        System.out.println("First test run");
+        WebElement element = driver.findElement(By.xpath("//*[contains(@text, 'Search Wikipedia')]"));
+        element.click();
+    }
+
+    @Test
+    public void secondTest(){
+        WebElement element = waitForElementPresentByXpath("//*[contains(@text, 'Search Wikipedia')]","элемент не найден",Duration.ofSeconds(5));
+        boolean isContains =  assertElementHasText(element,"не содержит текст","Search Wikipedia");
+        Assert.assertTrue(isContains);
+    }
+    private boolean assertElementHasText(WebElement element, String error_message, String expected_text)
+    {
+        boolean result = element.getAttribute("text").equals(expected_text);
+        if(!result)
+        {
+            System.out.println(error_message);
+        }
+        return result;
+    }
+    private WebElement waitForElementPresentByXpath(String xpath, String error_message, Duration timeoutInSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message+ "\n");
+        By by = By.xpath(xpath);
+        return wait.until((ExpectedConditions.presenceOfElementLocated(by)));
     }
 }
