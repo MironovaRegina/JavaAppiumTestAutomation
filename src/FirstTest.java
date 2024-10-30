@@ -44,7 +44,7 @@ public class FirstTest {
 
     @Test
     public void secondTest(){
-        WebElement element = waitForElementPresentByXpath("//*[contains(@text, 'Search Wikipedia')]","элемент не найден",Duration.ofSeconds(5));
+        WebElement element = waitForElementPresent(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),"элемент не найден",Duration.ofSeconds(5));
         boolean isContains =  assertElementHasText(element,"не содержит текст","Search Wikipedia");
         Assert.assertTrue(isContains);
     }
@@ -57,11 +57,27 @@ public class FirstTest {
         }
         return result;
     }
-    private WebElement waitForElementPresentByXpath(String xpath, String error_message, Duration timeoutInSeconds)
+    private WebElement waitForElementPresent(By by, String error_message, Duration timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message+ "\n");
-        By by = By.xpath(xpath);
         return wait.until((ExpectedConditions.presenceOfElementLocated(by)));
+    }
+    @Test
+    public void findWordTest(){
+        String word = "Java";
+        waitForElementPresent(By.id("org.wikipedia:id/fragment_feed_header"),"элемент не найден",Duration.ofSeconds(5)).click();
+        waitForElementPresent(By.id("org.wikipedia:id/search_src_text"),"элемент не найден",Duration.ofSeconds(5)).sendKeys(word);
+        Assert.assertTrue(driver.findElements(By.xpath("//*[contains(@text, '"+word+"')]")).size()>3);
+        WebElement el = waitForElementPresent(By.id("org.wikipedia:id/search_close_btn"),"элемент не найден",Duration.ofSeconds(5));
+        el.click();
+        el.click();
+        Assert.assertTrue(waitForElementNotPresent(el,"элемент не найден",Duration.ofSeconds(5)));
+    }
+    private boolean waitForElementNotPresent(WebElement element,String err_message, Duration timeoutInSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(err_message+ "\n");
+        return wait.until(ExpectedConditions.invisibilityOf(element));
     }
 }
