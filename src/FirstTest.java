@@ -124,4 +124,18 @@ public class FirstTest {
 
         driver.perform(Collections.singletonList(swipe));
     }
+    @Test
+    public void titleIsPresentTest() throws InterruptedException {
+        waitForElementPresent(By.xpath("//*[contains(@text, 'SKIP')]"),"элемент не найден",Duration.ofSeconds(5)).click();
+        String word = "Java";
+        waitForElementPresent(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),"элемент не найден",Duration.ofSeconds(5)).click();
+        waitForElementPresent(By.id("org.wikipedia:id/search_src_text"),"элемент не найден",Duration.ofSeconds(5)).sendKeys(word);
+        waitForElementPresent(By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[1]"),"элемент не найден",Duration.ofSeconds(5)).click();
+        waitForElementPresent(By.id("org.wikipedia:id/page_web_view"),"элемент не найден",Duration.ofSeconds(15)).click();
+        Assert.assertTrue(assertElementPresent(By.xpath("//android.view.View[@resource-id=\"pcs-edit-section-title-description\"]")));
+    }
+    public boolean assertElementPresent(By by)
+    {
+        return driver.findElement(by).isDisplayed();
+    }
 }
